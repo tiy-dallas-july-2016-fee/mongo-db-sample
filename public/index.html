@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <title>MongoDB Sample</title>
+  </head>
+
+  <body>
+
+    <button>POST</button>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+
+      $('button').on('click', function() {
+        $.ajax({
+          url: '/api/stuff/12345',
+          method: 'POST',
+          data: {
+            wins: 1,
+            losses: 0,
+            difficultyChosen: 'ludicrous'
+          }
+        })
+        .done(function(data) {
+          console.log('POST complete', data);
+        });
+      });
+
+    </script>
+
+  </body>
+
+</html>

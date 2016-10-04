@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/tiy-dallas-july-2016-fee/mongo-db-sample#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.10",
+    "mongoose": "^4.6.1"
   }
 }
