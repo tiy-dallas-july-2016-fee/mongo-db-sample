@@ -97,7 +97,11 @@ app.post('/api/stuff/:id', function(req, res) {
 
   console.log('what did I get?', userId, req.body);
 
-  var dataToInsert = {
+  var query = {
+    userId: userId
+  };
+
+  var fullDataset = {
     wins: Number(req.body.wins),
     losses: Number(req.body.losses),
     difficultyChosen: req.body.difficultyChosen,
@@ -109,11 +113,10 @@ app.post('/api/stuff/:id', function(req, res) {
     //assert.equal(null, err);
     console.log("Connected correctly to server");
 
-    insertDocuments(dataToInsert, db, function() {
-      db.close();
-      res.send('hello');
+    updateDocuments(query, fullDataset, db, function() {
+        db.close();
+        res.sendStatus(204);
     });
-
   });
 });
 
@@ -125,6 +128,37 @@ var insertDocuments = function(dataToInsert, db, callback) {
   collection.insert(dataToInsert, function(err, result) {
     console.log("Added something");
     callback(result);
+  });
+}
+
+var updateDocuments = function(query, fullDataset, db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+
+
+  var dataToIncrement = {
+    $inc: {
+      wins: fullDataset.wins,
+      losses: fullDataset.losses
+    }
+  }
+
+
+
+  // Insert some documents
+  collection.update(query, fullDataset, function(err, result) {
+    console.log("Added something. Error: ", err, ' Result: ', result);
+
+    if (result !== undefined) {
+      if (result.result.nModified === 0) {
+        insertDocuments(fullDataset, db, callback);
+      }
+      else {
+        callback(result);
+      }
+    }
+
+
   });
 }
 
